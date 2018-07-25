@@ -14,22 +14,30 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use('/console-log-div', express.static(__dirname + '/node_modules/console-log-div/'));
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 app.use('/axios', express.static(__dirname + '/node_modules/axios/dist/'));
 app.use('/whatwg-fetch', express.static(__dirname + '/node_modules/whatwg-fetch/'));
-app.use(cors());
+app.use(cors({
+  origin: 'http://127.0.0.1:3001',  // can not be *, after new version chrome
+  // origin: '*',  // can not be *, after new version chrome
+  credentials: true,  // Access-Control-Allow-Credentials: true
+}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(function(req, res, next) {
+  console.log('Cookies: ', JSON.stringify(req.cookies));
+  next();
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Credentials', true);
   next(createError(404));
 });
 

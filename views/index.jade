@@ -6,12 +6,85 @@ block content
   div
     div
       button(onclick="cleanCookie()") cleanCookie
+      button(onclick="cleanConsole()") cleanLog
+      button(onclick="setCurrentDomainCookie()") setRandomCurrentDomainCookie
+    h2
+      | request.mode='$defaultValue'
+    h3
+      | response has appropriate Access-Control-Allow-Credentials=true & Access-Control-Allow-Origin: $serverName
     hr
     div
-      button(onclick="onAxios()") axios
+      button(onclick="onAxios()") axios /setCookie
+      button(onclick="onAxios('http://127.0.0.1:3000/Test')") axios /Test
+    hr
     div
-      button(onclick="onAjax()") $.ajax
+      button(onclick="onAjax()") $.ajax /setCookie
+      button(onclick="onAjax('http://127.0.0.1:3000/Test')") $.ajax /Test
+    hr
     div
-      button(onclick="onFetch()") Native fetch
+      button(onclick="onFetch()")
+        | Native fetch /setCookie
+
+      button(onclick="onFetch('http://127.0.0.1:3000/Test')")
+        | Native fetch /Test
+
+    h3 others
     div
-      button(onclick="onWhatWgFetch()") whatwg-fetch
+      button(onclick="onFetch('http://127.0.0.1:3000/Test2')")
+        | Native fetch /Test2 and response with "Access-Control-Allow-Origin: *"
+
+      br
+
+      button(onclick="onFetch('http://127.0.0.1:3000/Test3')")
+        | Native fetch /Test3 and response with "Access-Control-Allow-Origin: http://127.0.0.1:3001(current server_name)"
+    br
+    br
+    hr
+    br
+    div
+      h2
+        | CORB, mean that browser can not read content of response.
+      h3 remove Access-Control-Allow-Credentials & Access-Control-Allow-Origin
+
+      button(onclick="onFetch('http://127.0.0.1:3000/withoutAcessControllAllowAll/setCookie', { mode: 'no-cors' })")
+        | Native fetch with setCookie and {  mode: 'no-cors' }
+
+      button(onclick="onFetch('http://127.0.0.1:3000/withoutAcessControllAllowAll/Test', { mode: 'no-cors' })")
+        | Native fetch with Test and {  mode: 'no-cors' }
+
+      br
+
+      button(onclick="onFetch('http://127.0.0.1:3000/withoutAcessControllAllowAll/setCookie')")
+        | Native fetch with setCookie and {  mode: '$defaultValue' }
+
+      button(onclick="onFetch('http://127.0.0.1:3000/withoutAcessControllAllowAll/Test')")
+        | Native fetch with Test and {  mode: '$defaultValue' }
+
+      br
+
+      h3 only remove Access-Control-Allow-Credentials
+
+      button(onclick="onFetch('http://127.0.0.1:3000/withoutAcessControllAllowCredential/setCookie', { mode: 'no-cors' })")
+        | Native fetch with setCookie and {  mode: 'no-cors' }
+
+      button(onclick="onFetch('http://127.0.0.1:3000/withoutAcessControllAllowCredential/setCookie')")
+        | Native fetch with setCookie and {  mode: '$defaultValue' }
+
+      h3 only remove Access-Control-Allow-Origin with
+
+      button(onclick="onFetch('http://127.0.0.1:3000/withoutAcessControllAllowOrigin/setCookie', { mode: 'no-cors' })")
+        | Native fetch with setCookie and {  mode: 'no-cors' }
+
+      button(onclick="onFetch('http://127.0.0.1:3000/withoutAcessControllAllowOrigin/setCookie')")
+        | Native fetch with setCookie and {  mode: '$defaultValue' }
+
+      button(onclick="onFetch('http://127.0.0.1:3001/withoutAcessControllAllowOrigin/setCookie', { mode: 'no-cors' })")
+        | Native fetch with setCookie and {  mode: 'no-cors' } but same domain
+
+    hr
+    div
+      button(onclick="onWhatWgFetch()")
+        | whatwg-fetch
+
+      button(onclick="onWhatWgFetch('http://127.0.0.1:3000/Test')")
+        | whatwg-fetch /Test

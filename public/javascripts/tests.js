@@ -3,14 +3,20 @@
 window.fetchNative = window.fetch;
 delete window.fetch;
 
-var onAxios = function() {
+var setCurrentDomainCookie = function() {
+  document.cookie = `A_${new Date().getTime()}=${new Date().getTime()}`;
+}
+
+var onAxios = function(url) {
   console.log('Clicked Axios');
   console.log('before', document.cookie);
-  axios.get('http://127.0.0.1:3000/setCookie')
+  axios.get(url || 'http://127.0.0.1:3000/setCookie', {
+    withCredentials: true,
+  })
     .then(function (response) {
       console.log('after', document.cookie);
       // handle success
-      console.log(response);
+      console.log('ResponseData', response);
     })
     .catch(function (error) {
       // handle error
@@ -21,45 +27,51 @@ var onAxios = function() {
     });
 };
 
-var onAjax = function() {
+var onAjax = function(url) {
   console.log('Clicked Ajax');
   $.ajax({
     method: 'get',
-    url: 'http://127.0.0.1:3000/setCookie',
+    url: url || 'http://127.0.0.1:3000/setCookie',
     beforeSend: () => {console.log('before', document.cookie)},
     xhrFields: {
       withCredentials: true,
     },
   }).done(data => {
-    console.log(data);
+    console.log('ResponseData', data);
     console.log('after', document.cookie);
   });
 };
 
-var onFetch = function() {
+var onFetch = function(url, opts) {
   console.log('Clicked Fetch');
   console.log('before', document.cookie);
-  fetchNative('http://127.0.0.1:3000/setCookie', {
-    method: 'get'
+  var opts = opts || {};
+  fetchNative(url || 'http://127.0.0.1:3000/setCookie', {
+    method: 'get',
     // mode: 'no-cors',
-    // crendentials: 'include',
-    // crendentials: 'same-origin',
+    credentials: 'include',  // also include cookie from current browser document.cookie, even if browser is different domain.
+    // credentials: 'same-origin', // also include cookie from current browser document.cookie, even if browser is different domain.
+    //
+    // headers: {
+    //   AA: '8',
+    // },
+    ...opts,
   }).then(resp => resp.text()).then(data => {
-    console.log(data);
+    console.log('ResponseData', data);
     console.log('after', document.cookie);
   });
 };
 
-var onWhatWgFetch = function() {
+var onWhatWgFetch = function(url) {
   console.log('Clicked Fetch');
   console.log('before', document.cookie);
-  fetch('http://127.0.0.1:3000/setCookie', {
-    method: 'get'
+  fetch(url || 'http://127.0.0.1:3000/setCookie', {
+    method: 'get',
     // mode: 'no-cors',
-    // crendentials: 'include',
-    // crendentials: 'same-origin',
+    credentials: 'include',  // also include cookie from current browser document.cookie, even if browser is different domain.
+    // credentials: 'same-origin',  // also include cookie from current browser document.cookie, even if browser is different domain.
   }).then(resp => resp.text()).then(data => {
-    console.log(data);
+    console.log('ResponseData', data);
     console.log('after', document.cookie);
   });
 };
@@ -94,4 +106,8 @@ var cleanCookie = function() {
   for (var i = 0; i < cookies.length; i++)
     eraseCookie(cookies[i].split("=")[0]);
   console.log('cookies cleaned');
+};
+
+var cleanConsole = function() {
+  $('#console-log-text').text('');
 };

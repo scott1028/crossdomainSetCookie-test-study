@@ -3,16 +3,18 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "npx run-p start:inside start:outside start:ngrep openBrowser",
-    "start:inside": "node ./bin/www",
-    "start:outside": "PORT=3001 node ./bin/www",
-    "start:ngrep": "sudo ngrep -d lo -W ByLine port 3000",
-    "openBrowser": "opn http://127.0.0.1:3001"
+    "start": "cross-env yarn run-p start:inside start:outside start:ngrep openBrowser",
+    "start:inside": "cross-env node ./bin/www",
+    "start:outside": "cross-env PORT=3001 node ./bin/www",
+    "start:ngrep": "sudo ngrep -d lo -W ByLine port 3000 or port 3001",
+    "openBrowser": "cross-env opn http://127.0.0.1:3001"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "console-log-div": "^0.6.3",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
+    "cross-env": "^5.2.0",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "faker": "^4.1.0",
