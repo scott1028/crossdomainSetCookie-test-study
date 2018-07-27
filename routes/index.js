@@ -13,6 +13,11 @@ router.get('/setCookie', function(req, res, next) {
   res.json({ status: `OK! ${req.path}` });
 });
 
+router.post('/setCookie', function(req, res, next) {
+  res.cookie('currentTime', `${new Date().getTime()}_${faker.name.firstName()}`);
+  res.json({ status: `OK by POST Method! ${req.path}` });
+});
+
 router.get('/Test', function(req, res, next) {
   res.json({ status: `Tested-${new Date().getTime()} ${req.path}` });
 });

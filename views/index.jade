@@ -28,6 +28,9 @@ block content
       button(onclick="onFetch('http://127.0.0.1:3000/Test')")
         | Native fetch /Test
 
+      button(onclick="onFetch(undefined, {method: 'POST'})")
+        | Native fetch POST /setCookie
+
     h3 others
     div
       button(onclick="onFetch('http://127.0.0.1:3000/Test2')")
