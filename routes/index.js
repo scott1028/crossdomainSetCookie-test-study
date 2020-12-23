@@ -8,6 +8,12 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+/* NOTE:
+     Caveat!! Received "set-cookie" of response's header will not work for cross domain situation.
+     ex: fetch('http://127.0.0.1:3000') on "abc.com"
+         and then open location.href = 'http://127.0.0.1:3000' from "abc.com"
+         finally, no cookie found on 127.0.0.1
+ */
 router.get('/setCookie', function(req, res, next) {
   res.cookie('currentTime', `${new Date().getTime()}_${faker.name.firstName()}`);
   res.json({ status: `OK! ${req.path}` });
