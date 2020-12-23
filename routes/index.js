@@ -13,6 +13,8 @@ router.get('/', function(req, res, next) {
      ex: fetch('http://127.0.0.1:3000') on "abc.com"
          and then open location.href = 'http://127.0.0.1:3000' from "abc.com"
          finally, no cookie found on 127.0.0.1
+
+     but you can still use a <img /> tag to achieve it. Take a look at "/crossDomainCookieSet"
  */
 router.get('/setCookie', function(req, res, next) {
   res.cookie('currentTime', `${new Date().getTime()}_${faker.name.firstName()}`);
@@ -22,6 +24,11 @@ router.get('/setCookie', function(req, res, next) {
 router.post('/setCookie', function(req, res, next) {
   res.cookie('currentTime', `${new Date().getTime()}_${faker.name.firstName()}`);
   res.json({ status: `OK by POST Method! ${req.path}` });
+});
+
+/* GET home page. */
+router.get('/crossDomainCookieSet', function(req, res, next) {
+  res.render('crossDomainCookieSet', { title: 'Express' });
 });
 
 router.get('/Test', function(req, res, next) {
