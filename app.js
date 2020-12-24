@@ -20,8 +20,8 @@ app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 app.use('/axios', express.static(__dirname + '/node_modules/axios/dist/'));
 app.use('/whatwg-fetch', express.static(__dirname + '/node_modules/whatwg-fetch/'));
 app.use(cors({
-  // origin: 'http://127.0.0.1:3001',  // can not be *, after new version chrome
-  origin: '*',  // can not be *, after new version chrome
+  origin: 'http://localhost:3001',  // can not be *, after new version chrome
+  // origin: '*',  // can not be *, after new version chrome
   credentials: true,  // Access-Control-Allow-Credentials: true // It doesn't matter with `set-cookie`
 }));
 app.use(logger('dev'));

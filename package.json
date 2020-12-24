@@ -7,7 +7,7 @@
     "start:inside": "cross-env node ./bin/www",
     "start:outside": "cross-env PORT=3001 node ./bin/www",
     "start:ngrep": "sudo ngrep -d lo -W ByLine port 3000 or port 3001",
-    "openBrowser": "cross-env opn http://127.0.0.1:3001"
+    "openBrowser": "cross-env opn http://localhost:3001"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -16,7 +16,7 @@
     "cors": "^2.8.4",
     "cross-env": "^5.2.0",
     "debug": "~2.6.9",
-    "express": "~4.16.0",
+    "express": "^4.17.1",
     "faker": "^4.1.0",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",

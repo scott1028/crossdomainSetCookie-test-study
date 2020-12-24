@@ -15,14 +15,29 @@ router.get('/', function(req, res, next) {
          finally, no cookie found on 127.0.0.1
 
      but you can still use a <img /> tag to achieve it. Take a look at "/crossDomainCookieSet"
+
+     20201224: Now this will not work anymore.
+
+     By default there is a setting in chrome
+
+     Privacy and Security/Block third-party cookies in Incognito
+      => Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
+      => While in incognito, sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
  */
 router.get('/setCookie', function(req, res, next) {
-  res.cookie('currentTime', `${new Date().getTime()}_${faker.name.firstName()}`);
+  res.cookie('currentTime', `${new Date().getTime()}_${faker.name.firstName()}`, {
+    sameSite: 'none' || 'lax' || 'strict',
+    // Ref: https://github.com/GoogleChromeLabs/samesite-examples/issues/26
+    secure: true, // Marks the cookie to be used with HTTPS only. Once you set 'none' you should enable Secure flag
+  });
   res.json({ status: `OK! ${req.path}` });
 });
 
 router.post('/setCookie', function(req, res, next) {
-  res.cookie('currentTime', `${new Date().getTime()}_${faker.name.firstName()}`);
+  res.cookie('currentTime', `${new Date().getTime()}_${faker.name.firstName()}`, {
+    sameSite: 'none' || 'lax' || 'strict',
+    secure: true, // Marks the cookie to be used with HTTPS only. Once you set 'none' you should enable Secure flag
+  });
   res.json({ status: `OK by POST Method! ${req.path}` });
 });
 
