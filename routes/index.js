@@ -23,20 +23,34 @@ router.get('/', function(req, res, next) {
      Privacy and Security/Block third-party cookies in Incognito
       => Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
       => While in incognito, sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
+
+    Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
+      [Lax]
+        Cookies are not sent on normal cross-site subrequests (for example to load images or frames into a third party site), but are sent when a user is navigating to the origin site (i.e. when following a link).
+        This is the default cookie value if SameSite has not been explicitly specified in recent browser versions (see the "SameSite: Defaults to Lax" feature in the Browser Compatibility).
+        Lax replaced None as the default value in order to ensure that users have reasonably robust defense against some classes of cross-site request forgery (CSRF) attacks.
+
+        That's where SameSite=Lax comes in by allowing the cookie to be sent with these top-level navigations. Let's revisit the cat article example from above where another site is referencing your content. They make use of your photo of the cat directly and provide a link through to your original article.
+
+      [Strict]
+        Cookies will only be sent in a first-party context and not be sent along with requests initiated by third party websites.
+
+      [None]
+        Cookies will be sent in all contexts, i.e in responses to both first-party and cross-origin requests.If SameSite=None is set, the cookie Secure attribute must also be set (or the cookie will be blocked).
  */
 router.get('/setCookie', function(req, res, next) {
   res.cookie('currentTime', `${new Date().getTime()}_${faker.name.firstName()}`, {
-    sameSite: 'none' || 'lax' || 'strict',
+    sameSite: 'lax' || 'none' || 'strict',
     // Ref: https://github.com/GoogleChromeLabs/samesite-examples/issues/26
-    secure: true, // Marks the cookie to be used with HTTPS only. Once you set 'none' you should enable Secure flag
+    // secure: true, // Marks the cookie to be used with HTTPS only. Once you set 'none' you should enable Secure flag
   });
   res.json({ status: `OK! ${req.path}` });
 });
 
 router.post('/setCookie', function(req, res, next) {
   res.cookie('currentTime', `${new Date().getTime()}_${faker.name.firstName()}`, {
-    sameSite: 'none' || 'lax' || 'strict',
-    secure: true, // Marks the cookie to be used with HTTPS only. Once you set 'none' you should enable Secure flag
+    sameSite: 'lax' || 'none' || 'strict',
+    // secure: true, // Marks the cookie to be used with HTTPS only. Once you set 'none' you should enable Secure flag
   });
   res.json({ status: `OK by POST Method! ${req.path}` });
 });
