@@ -37,20 +37,27 @@ router.get('/', function(req, res, next) {
 
       [None]
         Cookies will be sent in all contexts, i.e in responses to both first-party and cross-origin requests.If SameSite=None is set, the cookie Secure attribute must also be set (or the cookie will be blocked).
+
+    202012241545
+    Colusition now only one we can use is SameSite=None with secure work with two https site.
  */
 router.get('/setCookie', function(req, res, next) {
   res.cookie('currentTime', `${new Date().getTime()}_${faker.name.firstName()}`, {
-    sameSite: 'lax' || 'none' || 'strict',
+    // sameSite: 'lax' || 'none' || 'strict',
     // Ref: https://github.com/GoogleChromeLabs/samesite-examples/issues/26
     // secure: true, // Marks the cookie to be used with HTTPS only. Once you set 'none' you should enable Secure flag
+    sameSite: 'none',
+    secure: true,
   });
   res.json({ status: `OK! ${req.path}` });
 });
 
 router.post('/setCookie', function(req, res, next) {
   res.cookie('currentTime', `${new Date().getTime()}_${faker.name.firstName()}`, {
-    sameSite: 'lax' || 'none' || 'strict',
+    // sameSite: 'lax' || 'none' || 'strict',
     // secure: true, // Marks the cookie to be used with HTTPS only. Once you set 'none' you should enable Secure flag
+    sameSite: 'none',
+    secure: true,
   });
   res.json({ status: `OK by POST Method! ${req.path}` });
 });
