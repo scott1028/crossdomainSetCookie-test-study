@@ -40,6 +40,14 @@ router.get('/', function(req, res, next) {
 
     202012241545
     Colusition now only one we can use is SameSite=None with secure work with two https site.
+
+    if you are going to use fetch, please use following methods including 'credentials=includes':
+      Ref: https://github.com/github/fetch#sending-cookies
+        - For CORS requests, use credentials: 'include' to allow sending credentials to other domains:
+      
+      fetch('https://vt42lr1k34.execute-api.us-east-1.amazonaws.com/sandbox/api/setCookie?idToken=4411', {
+        credentials: 'include' }).then(resp => console.log(resp));
+      
  */
 router.get('/setCookie', function(req, res, next) {
   res.cookie('currentTime', `${new Date().getTime()}_${faker.name.firstName()}`, {
